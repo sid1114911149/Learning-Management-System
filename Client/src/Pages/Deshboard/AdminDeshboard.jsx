@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 
 import HomeLayout from "../../Layouts/HomeLayout";
 import { deleteCourse, getAllCourse } from '../../Redux/Slices/CourseSlice';
-import { getPaymentRecord } from '../../Redux/Slices/RazorpaySlice';
 import { getStatsData } from '../../Redux/Slices/StatSlice';
 
 ChartJS.register( ArcElement, Tooltip,Legend, CategoryScale, LinearScale, BarElement, Title);
@@ -21,9 +20,7 @@ function AdminDeshboard(){
     const dispatch =useDispatch();
     const navigate= useNavigate();
   
-    const { allUsersCount, subscribedCount } = useSelector((state) => state.stat);
-
-    const {allPayments, monthlySalesRecord  }=useSelector((state)=>state.razorpay);
+    const { allUsersCount} = useSelector((state) => state.stat);
   
 
     const userData={
@@ -31,7 +28,7 @@ function AdminDeshboard(){
         datasets:[
             {
                 label:"User Details",
-                data:[allUsersCount,subscribedCount],
+                data:[allUsersCount],
                 backgroundColor:["yellow","green"],
                 borderWidth:1,
                 borderColor:["yellow", "green"]
@@ -45,7 +42,6 @@ function AdminDeshboard(){
         datasets:[
             {
                label:"Sales/Month",
-               data:monthlySalesRecord, 
                backgroundColor:["red"],
             }
         ]
@@ -67,7 +63,7 @@ function AdminDeshboard(){
             async ()=>{
                 await dispatch(getAllCourse());
                 await dispatch(getStatsData());
-                await dispatch(getPaymentRecord());
+                // await dispatch(getPaymentRecord());
             }
         )()
 
@@ -94,36 +90,12 @@ function AdminDeshboard(){
                                 </div>
                                 <FaUsers className="text-yellow-500 text-5xl"/>
                             </div>
-                            <div className="flex items-center justify-between p-5 gap-5 rounded-md shadow-md">
-                                <div className="flex flex-col items-center">
-                                    <p className="font-semibold">Subscribed Users</p>
-                                    <h3 className="text-4xl font-bold">{subscribedCount}</h3>
-                                </div>
-                                <FaUsers className="text-green-500 text-5xl"/>
-                            </div>
                         </div>
                     </div>
 
                     <div className="flex flex-col items-center gap-10 p-5 shadow-lg rounded-md">
                         <div className="h-80 w-full relative">
                             <Bar  className="absolute bottom-0 h-80 w-full" data={salesData} />
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-5">
-                            <div className="flex items-center justify-between p-5 gap-5 rounded-md shadow-md">
-                                <div className="flex flex-col items-center">
-                                    <p className="font-semibold">Subscription Count</p>
-                                    <h3 className="text-4xl font-bold">{allPayments?.count}</h3>
-                                </div>
-                                <FcSalesPerformance className="text-yellow-500 text-5xl"/>
-                            </div>
-                            <div className="flex items-center justify-between p-5 gap-5 rounded-md shadow-md">
-                                <div className="flex flex-col items-center">
-                                    <p className="font-semibold">Total Revenue</p>
-                                    <h3 className="text-4xl font-bold">{allPayments?.count * 499}</h3>
-                                </div>
-                                <GiMoneyStack className="text-green-500 text-5xl"/>
-                            </div>
                         </div>
                     </div>
                 </div>

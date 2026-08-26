@@ -17,7 +17,7 @@ const cookieOptions = {
  * @REGISTER - Registers a new user
  */
 export const register=asyncHandler(async(req,res,next)=>{
-    const {fullName, email, password}= req.body;
+    const {fullName, email, password,role}= req.body;
 
     if(!fullName|| !email|| !password){
         return next(new AppError('All fileds are  required ', 400));
@@ -34,8 +34,8 @@ export const register=asyncHandler(async(req,res,next)=>{
         avatar:{
             public_id:email,
             secure_url:'https://res.cloudinary.com/du9jzqlpt/image/upload/v1674647316/avatar_drzgxv.jpg',
-        }
-         
+        },
+        role
     });
 
     if(!user){

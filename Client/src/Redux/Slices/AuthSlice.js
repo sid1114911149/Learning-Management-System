@@ -20,22 +20,39 @@ const initialState = {
 };
 
 
-export const creatAccount =createAsyncThunk("/auth/singup", async(data)=>{
-    try {
-        const res =axiosInstance.post("user/register", data);
-        toast.promise(res,{
-            loading:"wait creating your account",
-            success:(data)=>{
-                return data?.data?.message;
-            },
-            error:"Failed in create account"
-        })
-        return(await res).data;
-        
-    } catch (error) {
-        toast.error(error?.response?.data?.message);
+export const creatAccount = createAsyncThunk(
+    "/auth/signup",
+    async (data, { rejectWithValue }) => {
+
+        try {
+
+            const responsePromise = axiosInstance.post(
+                "user/register",
+                data
+            );
+
+            toast.promise(responsePromise, {
+                loading: "Wait creating your account",
+                success: (data) => {
+                    return data?.data?.message;
+                },
+                error: "Failed in create account"
+            });
+
+            const res = await responsePromise;
+
+            return res.data;
+
+        } catch (error) {
+
+            toast.error(error?.response?.data?.message);
+
+            return rejectWithValue(
+                error?.response?.data?.message
+            );
+        }
     }
-})
+);
 
 export const login =createAsyncThunk("/auth/login", async(data)=>{
     try {

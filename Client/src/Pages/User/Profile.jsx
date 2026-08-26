@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 
 import HomeLayout from "../../Layouts/HomeLayout";
 import { getuserData } from "../../Redux/Slices/AuthSlice";
-import { cancelCourseBundle } from "../../Redux/Slices/RazorpaySlice";
 
 function Profile(){
 
@@ -53,11 +52,6 @@ function Profile(){
                                         <button>Edit Profile</button>
                             </Link>
                         </div>
-                        {userData?.subscription?.status ==='active' && (
-                            <button onClick={handleCancelation} className="w-full bg-red-600  hover:bg-red-500 transition-all ease-in-out duration-300 rounded-sm  font-semibold py-2 cursor-pointer">
-                                Cancel Subscription
-                            </button>
-                        )}
                     </div>
                 </div>
         </HomeLayout>
